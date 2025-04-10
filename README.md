@@ -1,5 +1,13 @@
 # Eliza
 
+## (Special note)
+If you encounter `better-sqlite3` issue when `pnpm start`
+
+```bash
+pnpm add better-sqlite3@latest --force
+npm rebuild better-sqlite3
+```
+
 ## Edit the character files
 
 Open `src/character.ts` to modify the default character. Uncomment and edit.
