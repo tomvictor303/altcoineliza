@@ -1,5 +1,5 @@
 import type { Action, IAgentRuntime, Memory, State } from "@elizaos/core";
-import { getInflowData } from "../utils/custom";
+import { getInflowData } from "../utils/custom.ts";
 
 export const etfInflow: Action = {
   name: "ETF_INFLOW",

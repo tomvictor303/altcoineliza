@@ -29,6 +29,7 @@ export async function getInflowData(): Promise<InflowData> {
             });
 
             const json = await res.json();
+            console.log(json)
             if (json.code !== 0 || !json.data?.list?.length) {
                 throw new Error(`Invalid response for type: ${type}`);
             }
