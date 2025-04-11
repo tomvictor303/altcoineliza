@@ -5,7 +5,7 @@ If you encounter `better-sqlite3` issue when `pnpm start`
 
 ```bash
 pnpm add better-sqlite3@latest --force
-pnpm rebuild better-sqlite3
+npm rebuild better-sqlite3
 ```
 
 ## Edit the character files
