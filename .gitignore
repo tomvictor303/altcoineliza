@@ -1,4 +1,7 @@
 *.ts
+# But don't ignore files in src
+!src/**
+
 dist
 !index.ts
 !character.ts
