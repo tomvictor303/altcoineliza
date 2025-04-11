@@ -30,11 +30,11 @@ export async function getInflowData(): Promise<InflowData> {
 
             const json = await res.json();
             console.log(json)
-            if (json.code !== 0 || !json.data?.list?.length) {
+            if (json.code !== 0 || !json.data?.length) {
                 throw new Error(`Invalid response for type: ${type}`);
             }
 
-            return json.data.list[0]; // Most recent item is first
+            return json.data[0]; // Most recent item is first
         } catch (err) {
             console.error(`Error fetching latest ${type} inflow:`, err);
             return null;
