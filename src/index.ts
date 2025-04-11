@@ -24,6 +24,8 @@ import {
 } from "./config/index.ts";
 import { initializeDatabase } from "./database/index.ts";
 import { etfInflow } from "./actions/inflows-action.ts";
+import { DiscordClient } from "@elizaos/client-discord";
+import { customAutoDiscordPost } from "./utils/custom-auto-post.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -96,6 +98,13 @@ async function startAgent(character: Character, directClient: DirectClient) {
 
     // report to console
     elizaLogger.debug(`Started ${character.name} as ${runtime.agentId}`);
+
+    // BEGIN custom_logic
+    setTimeout(() => {
+      console.log('Custom logic initation runs after 10 seconds');
+      customAutoDiscordPost(runtime);
+    }, 10000);
+    // END custom_logic
 
     return runtime;
   } catch (error) {
