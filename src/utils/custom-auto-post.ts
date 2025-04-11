@@ -1,6 +1,7 @@
 import { DiscordClient } from "@elizaos/client-discord";
 import { AgentRuntime } from "@elizaos/core";
 import { getInflowDataFormatted } from "./custom.ts";
+import cron from "node-cron";
 
 export async function customAutoDiscordPost(runtime: AgentRuntime): Promise<void> {
     const target_channel_id = process.env.TARGET_CHANNEL_ID;
@@ -29,9 +30,28 @@ export async function customAutoDiscordPost(runtime: AgentRuntime): Promise<void
     const client = discordClient.client;
     const channel: any = client.channels.cache.get(target_channel_id);
     if (channel) {
-        const text = await getInflowDataFormatted();
-        channel.send(text);
+        scheduleAutoDiscordPost(runtime, channel);
     } else {
         console.error('Channel not found! DISCORD_AUTO_POST_FAILED');
+    }
+}
+
+function scheduleAutoDiscordPost(runtime: AgentRuntime, channel: any) {
+    const cronExpression = process.env.DISCORD_AUTO_POST_CRON;
+
+    if (!cronExpression) {
+        console.warn("DISCORD_AUTO_POST_CRON not set. Skipping auto post scheduling.");
+        return;
+    }
+
+    // Validate and schedule
+    try {
+        cron.schedule(cronExpression, async() => {
+            const text = await getInflowDataFormatted();
+            channel.send(text);
+        });
+        console.log(`Auto post scheduled with cron: "${cronExpression}"`);
+    } catch (err) {
+        console.error("Invalid cron expression. DISCORD_AUTO_POST_FAILED", err);
     }
 }
