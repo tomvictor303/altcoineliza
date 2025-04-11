@@ -47,3 +47,36 @@ export async function getInflowData(): Promise<InflowData> {
 
     return { btc, eth };
 }
+
+export async function getInflowDataFormatted(): Promise<string> {
+    const inflow = await getInflowData();
+
+    if (!inflow.btc || !inflow.eth) {
+        return "⚠️ Could not fetch ETF inflow data.";
+    }
+
+    const content = `
+📊 **ETF Inflow Snapshot**
+
+🟡 **BTC**
+• Date: ${inflow.btc.date}
+• Net Inflow: $${format(inflow.btc.totalNetInflow)}
+• Assets: $${format(inflow.btc.totalNetAssets)}
+
+🔵 **ETH**
+• Date: ${inflow.eth.date}
+• Net Inflow: $${format(inflow.eth.totalNetInflow)}
+• Assets: $${format(inflow.eth.totalNetAssets)}
+    `.trim();
+    
+    return content
+}
+
+
+function format(num: number): string {
+    return num.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+}
+  

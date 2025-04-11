@@ -1,5 +1,5 @@
 import type { Action, IAgentRuntime, Memory, State } from "@elizaos/core";
-import { getInflowData } from "../utils/custom.ts";
+import { getInflowDataFormatted } from "../utils/custom.ts";
 
 export const etfInflow: Action = {
   name: "ETF_INFLOW",
@@ -10,33 +10,12 @@ export const etfInflow: Action = {
   },
   handler: async (runtime, message, state, options, callback) => {
     try {
-      const inflow = await getInflowData();
-
-      if (!inflow.btc || !inflow.eth) {
-        if (callback) await callback({ text: "⚠️ Could not fetch ETF inflow data." });
-        return false;
-      }
-
-      const content = {
-        text: `
-📊 **ETF Inflow Snapshot**
-
-🟡 **BTC**
-• Date: ${inflow.btc.date}
-• Net Inflow: $${format(inflow.btc.totalNetInflow)}
-• Assets: $${format(inflow.btc.totalNetAssets)}
-
-🔵 **ETH**
-• Date: ${inflow.eth.date}
-• Net Inflow: $${format(inflow.eth.totalNetInflow)}
-• Assets: $${format(inflow.eth.totalNetAssets)}
-        `.trim(),
-      };
+      const text = await getInflowDataFormatted();
 
       if (callback) {
-        await callback(content);
+        await callback({ text });
       }
-
+      
       return true;
     } catch (err) {
       if (callback) {
@@ -48,10 +27,3 @@ export const etfInflow: Action = {
   },
   examples: [],
 };
-
-function format(num: number): string {
-  return num.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-}

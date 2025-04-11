@@ -1,5 +1,6 @@
 import { DiscordClient } from "@elizaos/client-discord";
 import { AgentRuntime } from "@elizaos/core";
+import { getInflowDataFormatted } from "./custom.ts";
 
 export async function customAutoDiscordPost(runtime: AgentRuntime): Promise<void> {
     const target_channel_id = process.env.TARGET_CHANNEL_ID;
@@ -15,7 +16,6 @@ export async function customAutoDiscordPost(runtime: AgentRuntime): Promise<void
 
     var discordClient: DiscordClient = null;
     for (const [key, client] of Object.entries(runtime.clients)) {
-        console.log('key', key, 'client', client);
         if (client instanceof DiscordClient ) {
             discordClient = client;
         }
@@ -29,7 +29,8 @@ export async function customAutoDiscordPost(runtime: AgentRuntime): Promise<void
     const client = discordClient.client;
     const channel: any = client.channels.cache.get(target_channel_id);
     if (channel) {
-        channel.send('Hello, world!');
+        const text = await getInflowDataFormatted();
+        channel.send(text);
     } else {
         console.error('Channel not found! DISCORD_AUTO_POST_FAILED');
     }

@@ -148,7 +148,7 @@ const startAgents = async () => {
   if (charactersArg) {
     characters = await loadCharacters(charactersArg);
   }
-  console.log("characters", characters);
+  
   try {
     for (const character of characters) {
       await startAgent(character, directClient as DirectClient);
