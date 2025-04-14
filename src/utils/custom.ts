@@ -80,3 +80,50 @@ function format(num: number): string {
     });
 }
   
+type TokenPriceItem = {
+    id: number; // numberic id from cryptorank
+    key: string;
+    symbol: string;
+    name: string;
+    rank: number; // rank from cryptorank
+    price: string; // price in usd
+};
+
+export async function getTokenPrices(): Promise<Array<TokenPriceItem>> {
+    const url = 'https://api.cryptorank.io/v2/currencies';
+    const apiKey = process.env.CRYPTORANK_API_KEY;
+    const headers = {
+        'X-Api-Key': apiKey,
+        'Content-Type': 'application/json'
+    };
+
+    try {
+        const res = await fetch(url, {
+            method: 'GET',
+            headers,
+        });
+
+        const json = await res.json();
+        console.log('json', json)
+        if (!json.data?.length) {
+            throw new Error(`Invalid response for type: getTokenPrices`);
+        }
+
+        return json.data;
+    } catch (err) {
+        console.error(`Error fetching latest token prices from cryptorank:`, err);
+        return [];
+    }
+}
+
+export async function getTokenPricesFormatted(): Promise<string> {
+    const items: Array<TokenPriceItem> = await getTokenPrices();
+    if (!items.length) return 'No token prices available.';
+
+    const lines = items.map(item => `${item.name}: ${item.price} $`);
+    const pricestext = lines.join('\n');
+    const content = `
+📊 **Token Prices**
+` + pricestext;
+    return content;
+}

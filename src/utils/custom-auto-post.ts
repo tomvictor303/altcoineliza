@@ -1,6 +1,6 @@
 import { DiscordClient } from "@elizaos/client-discord";
 import { AgentRuntime } from "@elizaos/core";
-import { getInflowDataFormatted } from "./custom.ts";
+import { getInflowDataFormatted, getTokenPricesFormatted } from "./custom.ts";
 import cron from "node-cron";
 
 export async function customAutoDiscordPost(runtime: AgentRuntime): Promise<void> {
@@ -44,11 +44,22 @@ function scheduleAutoDiscordPost(runtime: AgentRuntime, channel: any) {
         return;
     }
 
+
+    const test = async () => {
+        if (process.env.IS_DEV !== "true") { return; }
+        ////////////////////////////////////
+        const text2 = await getTokenPricesFormatted();
+        channel.send(text2);
+    }
+    test();
+
     // Validate and schedule
     try {
         cron.schedule(cronExpression, async() => {
             const text = await getInflowDataFormatted();
             channel.send(text);
+            // const text2 = await getTokenPricesFormatted();
+            // channel.send(text2);
         });
         console.log(`Auto post scheduled with cron: "${cronExpression}"`);
     } catch (err) {
