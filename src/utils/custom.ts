@@ -1,3 +1,14 @@
+export function sleep(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function format(num: number): string {
+    return num.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+}
+
 type InflowItem = {
     date: string;
     totalNetInflow: number;
@@ -71,14 +82,6 @@ export async function getInflowDataFormatted(): Promise<string> {
     
     return content
 }
-
-
-function format(num: number): string {
-    return num.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-}
   
 type TokenPriceItem = {
     id: number; // numberic id from cryptorank
@@ -104,7 +107,6 @@ export async function getTokenPrices(): Promise<Array<TokenPriceItem>> {
         });
 
         const json = await res.json();
-        console.log('json', json)
         if (!json.data?.length) {
             throw new Error(`Invalid response for type: getTokenPrices`);
         }
@@ -116,14 +118,22 @@ export async function getTokenPrices(): Promise<Array<TokenPriceItem>> {
     }
 }
 
-export async function getTokenPricesFormatted(): Promise<string> {
+export async function getTokenPricesFormatted(): Promise<Array<string>> {
     const items: Array<TokenPriceItem> = await getTokenPrices();
-    if (!items.length) return 'No token prices available.';
+    if (!items.length) return ['No token prices available.'];
 
-    const lines = items.map(item => `${item.name}: ${item.price} $`);
-    const pricestext = lines.join('\n');
-    const content = `
-📊 **Token Prices**
-` + pricestext;
-    return content;
+    const chunkSize = 25;
+    const chunks: Array<string> = [];
+
+    for (let i = 0; i < items.length; i += chunkSize) {
+        const chunk = items.slice(i, i + chunkSize);
+        const lines = chunk.map(item => `${item.name}: ${item.price} $`);
+        const pricestext = lines.join('\n');
+        const start = i + 1;
+        const end = i + chunk.length;
+        const content = `📊 **Token Prices (${start}~${end})**\n\n` + pricestext;
+        chunks.push(content);
+    }
+
+    return chunks;
 }
