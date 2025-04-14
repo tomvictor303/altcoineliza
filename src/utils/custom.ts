@@ -122,7 +122,7 @@ export async function getTokenPricesFormatted(): Promise<Array<string>> {
     const items: Array<TokenPriceItem> = await getTokenPrices();
     if (!items.length) return ['No token prices available.'];
 
-    const chunkSize = 25;
+    const chunkSize = 50;
     const chunks: Array<string> = [];
 
     for (let i = 0; i < items.length; i += chunkSize) {
