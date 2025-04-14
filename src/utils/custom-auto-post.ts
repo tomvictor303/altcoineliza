@@ -44,15 +44,18 @@ function scheduleAutoDiscordPost(runtime: AgentRuntime, channel: any) {
         return;
     }
 
-
-    const test = async () => {
-        if (process.env.IS_DEV !== "true") { return; }
-        ////////////////////////////////////
+    const sendTokenPrices2Discord = async () => {
         const texts = await getTokenPricesFormatted();
         for (let i = 0;i < texts.length; i++) {
             channel.send(texts[i]);
             sleep(500);
         }
+    }
+
+    const test = async () => {
+        if (process.env.IS_DEV !== "true") { return; }
+        ////////////////////////////////////
+        await sendTokenPrices2Discord();
     }
     test();
 
@@ -61,8 +64,8 @@ function scheduleAutoDiscordPost(runtime: AgentRuntime, channel: any) {
         cron.schedule(cronExpression, async() => {
             const text = await getInflowDataFormatted();
             channel.send(text);
-            // const text2 = await getTokenPricesFormatted();
-            // channel.send(text2);
+
+            await sendTokenPrices2Discord();
         });
         console.log(`Auto post scheduled with cron: "${cronExpression}"`);
     } catch (err) {
