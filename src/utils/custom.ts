@@ -178,7 +178,7 @@ async function fetchCryptoCurrencyList(): Promise<Array<CryptoCurrency>> {
 
         const json = await res.json();
         if (!json.data?.length) {
-            throw new Error(`Invalid response for API`);
+            throw new Error(`Invalid response for API: fetchCryptoCurrencyList`);
         }
 
         // Map API response to the CryptoCurrency interface
@@ -215,3 +215,55 @@ export async function getCryptoCurrencyList(): Promise<Array<CryptoCurrency>> {
 
     return cryptoList;
 }
+
+type PriceCache = {
+    [currencyId: number]: {
+      price: number;
+      timestamp: number;
+    };
+};
+  
+const priceCache: PriceCache = {};
+  
+export const getTokenPriceById = async (currencyId: number): Promise<number> => {
+    const now = Date.now();
+    const cached = priceCache[currencyId];
+  
+    // Return cached value if under 10 seconds old
+    const timeLimit = 10 * 1000;
+    if (cached && now - cached.timestamp < timeLimit) {
+        console.log(`Returning cached price for Id: ${currencyId}`);
+        return cached?.price ?? 0;
+    }
+    console.log(`Fetching price from API for Id: ${currencyId}`);
+  
+    const url = `https://api.cryptorank.io/v2/currencies/${currencyId}`;
+    const apiKey = process.env.CRYPTORANK_API_KEY;
+    const headers = {
+        'X-Api-Key': apiKey,
+        'Content-Type': 'application/json',
+    };
+  
+    try {
+        const res = await fetch(url, {
+            method: 'GET',
+            headers,
+        });
+
+        if (!res.ok) {
+            throw new Error(`Failed to fetch data: ${res.statusText}`);
+        }
+        const json = await res.json();      
+        if (!json?.data || json?.data?.price === undefined) {
+            throw new Error(`Invalid response for API: getTokenPriceById`);
+        }
+        const price = json.data.price;
+    
+        priceCache[currencyId] = { price, timestamp: now };
+        return price;
+    } catch (error) {
+        console.error(`Error fetching ${currencyId} price:`, error);
+        return cached?.price ?? 0;
+    }
+};
+  
