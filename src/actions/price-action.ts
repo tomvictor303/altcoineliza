@@ -10,6 +10,9 @@ export const getPriceAction: Action = {
   },
   handler: async (runtime, message, state, options, callback) => {
     try {
+      console.log(`message.content.inReplyTo`, message.content.inReplyTo);
+      console.log(`message.content.text`, message.content.text)
+
       const context = `Extract the cryptocurrency name or symbol from the user's message.
                       The message is: ${message.content.text}
                       Only respond with the cryptocurrency name or symbol, do not include any other text.`;
@@ -20,8 +23,8 @@ export const getPriceAction: Action = {
         stop: ["\n"]
       });
 
-      console.log(`searchTerm`, searchTerm)
-      if (!searchTerm) {
+      console.log(`searchTerm`, searchTerm)      
+      if (!searchTerm || searchTerm === runtime.character.name) {
         await callback({ text: `Could you tell me cryptocurrency name or symbol again ?` });
         return false;
       }
@@ -38,7 +41,8 @@ export const getPriceAction: Action = {
         }
       }
 
-      let text = `⚠️ Could not find cryptocurrency **${searchTerm}**`;
+      let text = `
+      ⚠️ Could not find cryptocurrency **${searchTerm}**`;
 
       if (searchCryptoCurrency) {
          text = await getTokenPriceFormatted(searchCryptoCurrency); 
