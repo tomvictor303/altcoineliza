@@ -1,3 +1,10 @@
+import { createCache } from 'cache-manager';
+
+// Create memory cache synchronously
+const memoryCache = createCache({
+    ttl: 8 * 60 * 60 * 1000,
+})
+
 export function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -136,4 +143,68 @@ export async function getTokenPricesFormatted(): Promise<Array<string>> {
     }
 
     return chunks;
+}
+
+export interface CryptoCurrency {
+    id: number;
+    key: string;
+    symbol: string;
+    name: string;
+}
+
+// Function to fetch cryptocurrency list from the API
+async function fetchCryptoCurrencyList(): Promise<Array<CryptoCurrency>> {
+    const url = 'https://api.cryptorank.io/v2/currencies/map';  // Updated API URL
+    const apiKey = process.env.CRYPTORANK_API_KEY;
+    const headers = {
+        'X-Api-Key': apiKey,
+        'Content-Type': 'application/json',
+    };
+
+    try {
+        const res = await fetch(url, {
+            method: 'GET',
+            headers,
+        });
+
+        if (!res.ok) {
+            throw new Error(`Failed to fetch data: ${res.statusText}`);
+        }
+
+        const data = await res.json();
+
+        if (!data || !Array.isArray(data)) {
+            throw new Error('Invalid response structure from API');
+        }
+
+        // Map API response to the CryptoCurrency interface
+        return data.map((item: any) => ({
+            id: item.id,
+            key: item.key,
+            symbol: item.symbol,
+            name: item.name,
+        }));
+    } catch (error) {
+        console.error('Error fetching cryptocurrency list:', error);
+        throw error;
+    }
+}
+
+// Function to get the cryptocurrency list from cache or API
+export async function getCryptoCurrencyList(): Promise<Array<CryptoCurrency>> {
+    // Try to get the cached list first
+    const cachedList = await memoryCache.get('cryptoCurrencyList');
+
+    if (cachedList) {
+        console.log('Returning cached cryptocurrency list');
+        return cachedList as Array<CryptoCurrency>;
+    }
+
+    console.log('Fetching new cryptocurrency list from API');
+    const cryptoList = await fetchCryptoCurrencyList();
+    
+    // Cache the new data for 8 hours
+    await memoryCache.set('cryptoCurrencyList', cryptoList);
+
+    return cryptoList;
 }
