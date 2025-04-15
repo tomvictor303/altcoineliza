@@ -171,14 +171,14 @@ async function fetchCryptoCurrencyList(): Promise<Array<CryptoCurrency>> {
             throw new Error(`Failed to fetch data: ${res.statusText}`);
         }
 
-        const data = await res.json();
-
-        if (!data || !Array.isArray(data)) {
+        const json = await res.json();
+        
+        if (!json.data?.length) {
             throw new Error('Invalid response structure from API');
         }
 
         // Map API response to the CryptoCurrency interface
-        return data.map((item: any) => ({
+        return json.data.map((item: any) => ({
             id: item.id,
             key: item.key,
             symbol: item.symbol,
