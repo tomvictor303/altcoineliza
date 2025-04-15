@@ -55,7 +55,7 @@ function scheduleAutoDiscordPost(runtime: AgentRuntime, channel: any) {
     const test = async () => {
         if (process.env.IS_DEV !== "true") { return; }
         ////////////////////////////////////
-        await sendTokenPrices2Discord();
+        // await sendTokenPrices2Discord();
     }
     test();
 
@@ -64,8 +64,6 @@ function scheduleAutoDiscordPost(runtime: AgentRuntime, channel: any) {
         cron.schedule(cronExpression, async() => {
             const text = await getInflowDataFormatted();
             channel.send(text);
-
-            await sendTokenPrices2Discord();
         });
         console.log(`Auto post scheduled with cron: "${cronExpression}"`);
     } catch (err) {
