@@ -1,16 +1,48 @@
-import type { Action, IAgentRuntime, Memory, State } from "@elizaos/core";
-import { getInflowDataFormatted } from "../utils/custom.ts";
+import { generateText, ModelClass, type Action, type IAgentRuntime, type Memory, type State } from "@elizaos/core";
+import { CryptoCurrency, getCryptoCurrencyList, getInflowDataFormatted, getTokenPriceFormatted } from "../utils/custom.ts";
 
-export const etfInflow: Action = {
+export const getPriceAction: Action = {
   name: "GET_PRICE",
   similes: ["TOKEN_PRICE", "CRYTO_CURRENCY_PRICE", "COIN_PRICE"],
-  description: "Gets the price of given cryptocurrency or token or coin",
+  description: "Gets the price of given cryptocurrency",
   validate: async (runtime: IAgentRuntime, message: Memory, state?: State) => {
     return true;
   },
   handler: async (runtime, message, state, options, callback) => {
     try {
-      const text = await getInflowDataFormatted();
+      const context = `Extract the cryptocurrency name or symbol from the user's message.
+                      The message is: ${message.content.text}
+                      Only respond with the cryptocurrency name or symbol, do not include any other text.`;
+      const searchTerm = await generateText({
+        runtime,
+        context,
+        modelClass: ModelClass.SMALL,
+        stop: ["\n"]
+      });
+
+      console.log(`searchTerm`, searchTerm)
+      if (!searchTerm) {
+        await callback({ text: `Could you tell me cryptocurrency name or symbol again ?` });
+        return false;
+      }
+
+      const cryptoList: Array<CryptoCurrency> = await getCryptoCurrencyList();
+      const pureSearchTerm = searchTerm.replace(/\s+/g, '').toLowerCase();
+      let searchCryptoCurrency: CryptoCurrency | null = null;
+      for (let i = 0; i < cryptoList.length; i++) {
+        const pureSymbol = cryptoList[i].symbol?.toLowerCase();
+        const pureName = cryptoList[i].name?.toLowerCase();
+        if ( pureName === pureSearchTerm || pureSymbol === pureSearchTerm ) {
+          searchCryptoCurrency = cryptoList[i];
+          break;
+        }
+      }
+
+      let text = `⚠️ Could not find cryptocurrency **${searchTerm}**`;
+
+      if (searchCryptoCurrency) {
+         text = await getTokenPriceFormatted(searchCryptoCurrency); 
+      }
 
       if (callback) {
         await callback({ text });
@@ -19,7 +51,7 @@ export const etfInflow: Action = {
       return true;
     } catch (err) {
       if (callback) {
-        await callback({ text: "❌ An error occurred while fetching ETF data." });
+        await callback({ text: "❌ An error occurred while fetching price data." });
       }
       console.error("Action [GET_PRICE] error:", err);
       return false;

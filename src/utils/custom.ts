@@ -233,7 +233,7 @@ export const getTokenPriceById = async (currencyId: number): Promise<number> => 
     const timeLimit = 10 * 1000;
     if (cached && now - cached.timestamp < timeLimit) {
         console.log(`Returning cached price for Id: ${currencyId}`);
-        return cached?.price ?? 0;
+        return cached?.price ?? -1; // -1 means invalid price
     }
     console.log(`Fetching price from API for Id: ${currencyId}`);
   
@@ -263,7 +263,22 @@ export const getTokenPriceById = async (currencyId: number): Promise<number> => 
         return price;
     } catch (error) {
         console.error(`Error fetching ${currencyId} price:`, error);
-        return cached?.price ?? 0;
+        return -1; // -1 means invalid price
     }
 };
+
+export async function getTokenPriceFormatted(cryptoCurrency: CryptoCurrency): Promise<string> {
+    if (!cryptoCurrency) {
+       return `⚠️ Invalid CryptoCurrency Object Provided`;
+    }
+    const price = await getTokenPriceById(cryptoCurrency.id);
+
+    if (price === -1 || price === null || price === undefined) {
+        return "⚠️ Could not fetch Price data";
+    }
+
+    const content = `📊 **${cryptoCurrency.name} (${cryptoCurrency.symbol})** price: ${price} USD`.trim();
+    
+    return content
+}
   

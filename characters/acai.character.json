@@ -97,6 +97,51 @@
           "action": "ETF_INFLOW"
         }
       }
+    ],
+    [
+      {
+        "user": "{{user1}}",
+        "content": {
+          "text": "GET_PRICE"
+        }
+      },
+      {
+        "user": "Eliza",
+        "content": {
+          "text": "Loading data, please wait.",
+          "action": "GET_PRICE"
+        }
+      }
+    ],
+    [
+      {
+        "user": "{{user1}}",
+        "content": {
+          "text": "What is bitcoin price ?"
+        }
+      },
+      {
+        "user": "Eliza",
+        "content": {
+          "text": "Bitcoin price is ...",
+          "action": "GET_PRICE"
+        }
+      }
+    ],
+    [
+      {
+        "user": "{{user1}}",
+        "content": {
+          "text": "Please tell me bitcoin price"
+        }
+      },
+      {
+        "user": "Eliza",
+        "content": {
+          "text": "Bitcoin price is ...",
+          "action": "GET_PRICE"
+        }
+      }
     ]
   ],
   "postExamples": [
