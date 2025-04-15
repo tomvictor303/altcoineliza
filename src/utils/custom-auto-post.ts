@@ -44,13 +44,13 @@ function scheduleAutoDiscordPost(runtime: AgentRuntime, channel: any) {
         return;
     }
 
-    const sendTokenPrices2Discord = async () => {
-        const texts = await getTokenPricesFormatted();
-        for (let i = 0;i < texts.length; i++) {
-            channel.send(texts[i]);
-            sleep(500);
-        }
-    }
+    // const sendTokenPrices2Discord = async () => {
+    //     const texts = await getTokenPricesFormatted();
+    //     for (let i = 0;i < texts.length; i++) {
+    //         channel.send(texts[i]);
+    //         sleep(500);
+    //     }
+    // }
 
     const test = async () => {
         if (process.env.IS_DEV !== "true") { return; }
