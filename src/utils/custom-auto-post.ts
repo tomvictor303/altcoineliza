@@ -1,6 +1,6 @@
 import { DiscordClient } from "@elizaos/client-discord";
 import { AgentRuntime } from "@elizaos/core";
-import { getInflowDataFormatted, getTokenPricesFormatted, sleep } from "./custom.ts";
+import { getInflowDataFormatted, getTokenPriceById, getTokenPricesFormatted, sleep } from "./custom.ts";
 import cron from "node-cron";
 
 export async function customAutoDiscordPost(runtime: AgentRuntime): Promise<void> {
@@ -56,6 +56,7 @@ function scheduleAutoDiscordPost(runtime: AgentRuntime, channel: any) {
         if (process.env.IS_DEV !== "true") { return; }
         ////////////////////////////////////
         // await sendTokenPrices2Discord();
+        // console.log('price', (await getTokenPriceById(7)));
     }
     test();
 
