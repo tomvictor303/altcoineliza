@@ -24,7 +24,7 @@ export const getPriceAction: Action = {
       });
 
       console.log(`searchTerm`, searchTerm)      
-      if (!searchTerm || searchTerm === runtime.character.name) {
+      if (!searchTerm || searchTerm === runtime.character.name || searchTerm === 'None') {
         await callback({ text: `Could you tell me cryptocurrency name or symbol again ?` });
         return false;
       }

@@ -274,7 +274,7 @@ export async function getTokenPriceFormatted(cryptoCurrency: CryptoCurrency): Pr
     const price = await getTokenPriceById(cryptoCurrency.id);
 
     if (price === -1 || price === null || price === undefined) {
-        return "⚠️ Could not fetch Price data";
+        return `⚠️ Could not fetch Price data for **${cryptoCurrency.name} (${cryptoCurrency.symbol})**`;
     }
 
     const content = `📊 **${cryptoCurrency.name} (${cryptoCurrency.symbol})** price: ${price} USD`.trim();
