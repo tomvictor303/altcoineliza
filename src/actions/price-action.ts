@@ -26,7 +26,7 @@ export const getPriceAction: Action = {
       });
 
       console.log(`searchTerm`, searchTerm)      
-      if (!searchTerm || searchTerm === runtime.character.name || searchTerm === 'None') {
+      if (!searchTerm || searchTerm === runtime.character.name || searchTerm === 'None' || searchTerm === 'None.') {
         console.log(`searchTerm is not provided or invalid`)
         await callback({ text: `⚠️ Please include cryptocurrency name or symbol in your message` });
         return true;
