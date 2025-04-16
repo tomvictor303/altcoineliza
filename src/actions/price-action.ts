@@ -12,6 +12,8 @@ export const getPriceAction: Action = {
     try {
       console.log(`message.content.inReplyTo`, message.content.inReplyTo);
       console.log(`message.content.text`, message.content.text)
+      console.log(`message.content.source`, message.content.source)
+      console.log(`message.content.action`, message.content.action)
 
       const context = `Extract the cryptocurrency name or symbol from the user's message.
                       The message is: ${message.content.text}
@@ -26,7 +28,7 @@ export const getPriceAction: Action = {
       console.log(`searchTerm`, searchTerm)      
       if (!searchTerm || searchTerm === runtime.character.name || searchTerm === 'None') {
         console.log(`searchTerm is not provided or invalid`)
-        await callback({ text: `Could you tell me cryptocurrency name or symbol again ?` });
+        await callback({ text: `⚠️ Please include cryptocurrency name or symbol in your question` });
         return true;
       }
 
