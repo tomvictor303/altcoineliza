@@ -25,8 +25,9 @@ export const getPriceAction: Action = {
 
       console.log(`searchTerm`, searchTerm)      
       if (!searchTerm || searchTerm === runtime.character.name || searchTerm === 'None') {
+        console.log(`searchTerm is not provided or invalid`)
         await callback({ text: `Could you tell me cryptocurrency name or symbol again ?` });
-        return false;
+        return true;
       }
 
       const cryptoList: Array<CryptoCurrency> = await getCryptoCurrencyList();
