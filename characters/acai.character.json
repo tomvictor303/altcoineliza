@@ -148,6 +148,21 @@
       {
         "user": "{{user1}}",
         "content": {
+          "text": "bitcoin price again"
+        }
+      },
+      {
+        "user": "Eliza",
+        "content": {
+          "text": "Loading data, please wait.",
+          "action": "GET_PRICE"
+        }
+      }
+    ],
+    [
+      {
+        "user": "{{user1}}",
+        "content": {
           "text": "updated price"
         }
       },
