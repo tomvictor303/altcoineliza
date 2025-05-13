@@ -281,4 +281,37 @@ export async function getTokenPriceFormatted(cryptoCurrency: CryptoCurrency): Pr
     
     return content
 }
+
+export const getHeuristMeshAgentResponse = async (agentName: string, query: string): Promise<string> => {
+    const url = `https://sequencer-v2.heurist.xyz/mesh_request`;
+    const apiKey = process.env.HEURIST_API_KEY;
+    const headers = {
+        'Content-Type': 'application/json',
+    };
   
+    try {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                'agent_id': agentName,
+                'input': {
+                    'query': query
+                },
+                'api_key': apiKey
+            })
+        });
+
+        if (!res.ok) {
+            throw new Error(`Failed to fetch data: ${res.statusText}`);
+        }
+        const json = await res.json();      
+        if (!json?.response) {
+            throw new Error(`Invalid response from Heurist Mesh Agent`);
+        }
+        return json?.response;
+    } catch (error) {
+        console.error(`Error on accessing Heurist Mesh Agent`, error);
+        return "Error on accessing Heurist Mesh Agent";
+    }
+};

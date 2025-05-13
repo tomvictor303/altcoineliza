@@ -1,5 +1,6 @@
 import { generateText, ModelClass, type Action, type IAgentRuntime, type Memory, type State } from "@elizaos/core";
 import { CryptoCurrency, getCryptoCurrencyList, getInflowDataFormatted, getTokenPriceFormatted } from "../utils/custom.ts";
+import { HEURIST_AGENT_NAMES } from "../utils/constants.ts";
 
 export const getPriceAction: Action = {
   name: "HEURIST",
@@ -15,17 +16,8 @@ export const getPriceAction: Action = {
       console.log(`HEURIST: message.content.source`, message.content.source)
       console.log(`HEURIST: message.content.action`, message.content.action)
       
-      const agentNames = [
-        "CoinGeckoTokenInfoAgent", 
-        "DexScreenerTokenInfoAgent", 
-        BitquerySolanaTokenInfoAgent, 
-        PumpFunTokenAgent, 
-        TwitterInfoAgent, 
-        TokenMetricsAgent  
-        
-        SolWalletAgent]
       const context = `Please tell me which HEURIST agent is suitable for the message.
-                      Agents are .
+                      List of HEURIST agents that we can use: ${HEURIST_AGENT_NAMES.join(',')}.
                       The message is: ${message.content.text}
                       Only respond with agent name, do not include any other text.
                       If you cannot find out among provided agent names, just reply with appropriate response.`;
@@ -36,31 +28,14 @@ export const getPriceAction: Action = {
         stop: ["\n"]
       });
 
-      console.log(`HEURIST: agentName`, agentName)      
-      if (!agentName || agentName === runtime.character.name || agentName === 'None' || agentName === 'None.') {
+      console.log(`HEURIST: agentName: `, agentName)      
+      if (!HEURIST_AGENT_NAMES.includes(agentName)) {
         console.log(`agentName is not provided or invalid`)
-        await callback({ text: `⚠️ Please include cryptocurrency name or symbol in your message` });
+        await callback({ text: agentName });
         return true;
       }
-
-      const cryptoList: Array<CryptoCurrency> = await getCryptoCurrencyList();
-      const pureSearchTerm = agentName.replace(/\s+/g, '').toLowerCase();
-      let searchCryptoCurrency: CryptoCurrency | null = null;
-      for (let i = 0; i < cryptoList.length; i++) {
-        const pureSymbol = cryptoList[i].symbol?.toLowerCase();
-        const pureName = cryptoList[i].name?.toLowerCase();
-        if ( pureName === pureSearchTerm || pureSymbol === pureSearchTerm ) {
-          searchCryptoCurrency = cryptoList[i];
-          break;
-        }
-      }
-
-      let text = `
-      ⚠️ Could not find cryptocurrency **${agentName}**`;
-
-      if (searchCryptoCurrency) {
-         text = await getTokenPriceFormatted(searchCryptoCurrency); 
-      }
+      
+      
 
       if (callback) {
         await callback({ text });
