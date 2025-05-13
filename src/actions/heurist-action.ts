@@ -50,12 +50,10 @@ export const heuristAction: Action = {
       return false;
     }
   },
-  examples: HEURIST_TRIGGER_QUERIES.map((query) => 
+  examples: HEURIST_TRIGGER_QUERIES.map((query) =>
     [
-      [
-        { user: '{{user1}}', content: { text: query } },
-        { user: '{{user2}}', content: { text: '', action: 'HEURIST'}},
-      ],
+      { user: '{{user1}}', content: { text: query } },
+      { user: '{{user2}}', content: { text: '', action: 'HEURIST'}},
     ],
   )
 };
