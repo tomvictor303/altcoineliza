@@ -10,30 +10,41 @@ export const getPriceAction: Action = {
   },
   handler: async (runtime, message, state, options, callback) => {
     try {
-      console.log(`message.content.inReplyTo`, message.content.inReplyTo);
-      console.log(`message.content.text`, message.content.text)
-      console.log(`message.content.source`, message.content.source)
-      console.log(`message.content.action`, message.content.action)
-
-      const context = `Extract the cryptocurrency name or symbol from the user's message.
+      console.log(`HEURIST: message.content.inReplyTo`, message.content.inReplyTo);
+      console.log(`HEURIST: message.content.text`, message.content.text)
+      console.log(`HEURIST: message.content.source`, message.content.source)
+      console.log(`HEURIST: message.content.action`, message.content.action)
+      
+      const agentNames = [
+        "CoinGeckoTokenInfoAgent", 
+        "DexScreenerTokenInfoAgent", 
+        BitquerySolanaTokenInfoAgent, 
+        PumpFunTokenAgent, 
+        TwitterInfoAgent, 
+        TokenMetricsAgent  
+        
+        SolWalletAgent]
+      const context = `Please tell me which HEURIST agent is suitable for the message.
+                      Agents are .
                       The message is: ${message.content.text}
-                      Only respond with the cryptocurrency name or symbol, do not include any other text.`;
-      const searchTerm = await generateText({
+                      Only respond with agent name, do not include any other text.
+                      If you cannot find out among provided agent names, just reply with appropriate response.`;
+      const agentName = await generateText({
         runtime,
         context,
         modelClass: ModelClass.SMALL,
         stop: ["\n"]
       });
 
-      console.log(`searchTerm`, searchTerm)      
-      if (!searchTerm || searchTerm === runtime.character.name || searchTerm === 'None' || searchTerm === 'None.') {
-        console.log(`searchTerm is not provided or invalid`)
+      console.log(`HEURIST: agentName`, agentName)      
+      if (!agentName || agentName === runtime.character.name || agentName === 'None' || agentName === 'None.') {
+        console.log(`agentName is not provided or invalid`)
         await callback({ text: `⚠️ Please include cryptocurrency name or symbol in your message` });
         return true;
       }
 
       const cryptoList: Array<CryptoCurrency> = await getCryptoCurrencyList();
-      const pureSearchTerm = searchTerm.replace(/\s+/g, '').toLowerCase();
+      const pureSearchTerm = agentName.replace(/\s+/g, '').toLowerCase();
       let searchCryptoCurrency: CryptoCurrency | null = null;
       for (let i = 0; i < cryptoList.length; i++) {
         const pureSymbol = cryptoList[i].symbol?.toLowerCase();
@@ -45,7 +56,7 @@ export const getPriceAction: Action = {
       }
 
       let text = `
-      ⚠️ Could not find cryptocurrency **${searchTerm}**`;
+      ⚠️ Could not find cryptocurrency **${agentName}**`;
 
       if (searchCryptoCurrency) {
          text = await getTokenPriceFormatted(searchCryptoCurrency); 

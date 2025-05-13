@@ -4,16 +4,16 @@ import { CryptoCurrency, getCryptoCurrencyList, getInflowDataFormatted, getToken
 export const getPriceAction: Action = {
   name: "GET_PRICE",
   similes: ["TOKEN_PRICE", "CRYTO_CURRENCY_PRICE", "COIN_PRICE"],
-  description: "Gets the price of given cryptocurrency",
+  description: "Gets the price of given cryptocurrency from cryptorank.io API",
   validate: async (runtime: IAgentRuntime, message: Memory, state?: State) => {
     return true;
   },
   handler: async (runtime, message, state, options, callback) => {
     try {
-      console.log(`message.content.inReplyTo`, message.content.inReplyTo);
-      console.log(`message.content.text`, message.content.text)
-      console.log(`message.content.source`, message.content.source)
-      console.log(`message.content.action`, message.content.action)
+      console.log(`GET_PRICE: message.content.inReplyTo`, message.content.inReplyTo);
+      console.log(`GET_PRICE: message.content.text`, message.content.text)
+      console.log(`GET_PRICE: message.content.source`, message.content.source)
+      console.log(`GET_PRICE: message.content.action`, message.content.action)
 
       const context = `Extract the cryptocurrency name or symbol from the user's message.
                       The message is: ${message.content.text}
