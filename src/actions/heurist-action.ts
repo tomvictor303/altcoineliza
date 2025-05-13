@@ -1,5 +1,5 @@
 import { generateText, ModelClass, type Action, type IAgentRuntime, type Memory, type State } from "@elizaos/core";
-import { CryptoCurrency, getCryptoCurrencyList, getInflowDataFormatted, getTokenPriceFormatted } from "../utils/custom.ts";
+import { CryptoCurrency, getCryptoCurrencyList, getHeuristMeshAgentResponse, getInflowDataFormatted, getTokenPriceFormatted } from "../utils/custom.ts";
 import { HEURIST_AGENT_NAMES } from "../utils/constants.ts";
 
 export const getPriceAction: Action = {
@@ -35,7 +35,7 @@ export const getPriceAction: Action = {
         return true;
       }
       
-      
+      const text = getHeuristMeshAgentResponse(agentName, message.content.text);
 
       if (callback) {
         await callback({ text });
