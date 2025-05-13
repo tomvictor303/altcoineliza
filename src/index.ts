@@ -27,6 +27,7 @@ import { etfInflow } from "./actions/inflows-action.ts";
 import { DiscordClient } from "@elizaos/client-discord";
 import { customAutoDiscordPost } from "./utils/custom-auto-post.ts";
 import { getPriceAction } from "./actions/price-action.ts";
+import { heuristAction } from "./actions/heurist-action.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -65,7 +66,7 @@ export function createAgent(
       character.settings?.secrets?.WALLET_PUBLIC_KEY ? solanaPlugin : null,
     ].filter(Boolean),
     providers: [],
-    actions: [etfInflow, getPriceAction],
+    actions: [etfInflow, getPriceAction, heuristAction],
     services: [],
     managers: [],
     cacheManager: cache,
