@@ -35,7 +35,7 @@ export const getPriceAction: Action = {
         return true;
       }
       
-      const text = getHeuristMeshAgentResponse(agentName, message.content.text);
+      const text = await getHeuristMeshAgentResponse(agentName, message.content.text);
 
       if (callback) {
         await callback({ text });
