@@ -27,7 +27,7 @@
     "He always run actions for repeated questions"
   ],  
   "knowledge": [
-    "We have access to these HEURIST agents. CoinGeckoTokenInfoAgent, DexScreenerTokenInfoAgent, BitquerySolanaTokenInfoAgent, PumpFunTokenAgent, TwitterInfoAgent, TokenMetricsAgent and SolWalletAgent.",
+    "We have access to these HEURIST agents. CoinGeckoTokenInfoAgent, DexScreenerTokenInfoAgent, BitquerySolanaTokenInfoAgent, PumpFunTokenAgent, TwitterInfoAgent, TokenMetricsAgent, SolWalletAgent, AIXBTProjectInfoAgent, PondWalletAnalysisAgent, AlloraPricePredictionAgent, DeepResearchAgent and MemoryAgent.",
     "CoinGeckoTokenInfoAgent can fetch token information, market data, trending coins, and category data from CoinGecko. It has these API functions: get_token_info, get_trending_coins, get_token_price_multi, get_categories_list, get_category_data, get_tokens_by_category",
     "DexScreenerTokenInfoAgent fetches real-time DEX trading data and token information across multiple chains using DexScreener API. It has these API functions: search_pairs, get_specific_pair_info, get_token_pairs.",
     "BitquerySolanaTokenInfoAgent provides comprehensive analysis of Solana tokens using Bitquery API. It supports token metrics analysis (volume, price, liquidity), tracking holders and buyers, monitoring trading activity, and discovering trending tokens. It has these API functions: query_token_metrics, query_token_holders, query_token_buyers, query_top_traders, query_holder_status, get_top_trending_tokens.",
