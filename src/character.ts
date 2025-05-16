@@ -30,7 +30,18 @@ for (const agentName in HEURIST_AGENT_EXAMPLES) {
     }
 }
 
+const heurist_trigger_examples = HEURIST_TRIGGER_QUERIES.map((query) =>
+    [
+      { user: '{{user1}}', content: { text: query } },
+      { user: '{{user2}}', content: { text: '', action: 'HEURIST'}},
+    ],
+);
+
 export const character: any = {
     ...characterJson,
     knowledge,
+    messageExamples: [
+        ...characterJson.messageExamples,
+        ...heurist_trigger_examples,
+    ],
 };

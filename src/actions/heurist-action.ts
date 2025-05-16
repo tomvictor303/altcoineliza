@@ -1,6 +1,6 @@
 import { generateText, ModelClass, type Action, type IAgentRuntime, type Memory, type State } from "@elizaos/core";
 import { CryptoCurrency, getCryptoCurrencyList, getHeuristMeshAgentResponse, getInflowDataFormatted, getTokenPriceFormatted } from "../utils/custom.ts";
-import { HEURIST_AGENT_NAMES, HEURIST_TRIGGER_QUERIES } from "../utils/constants.ts";
+import { HEURIST_AGENT_NAMES } from "../utils/constants.ts";
 
 export const heuristAction: Action = {
   name: "HEURIST",
@@ -51,11 +51,5 @@ export const heuristAction: Action = {
       console.error("Action [GET_PRICE] error:", err);
       return false;
     }
-  },
-  examples: HEURIST_TRIGGER_QUERIES.map((query) =>
-    [
-      { user: '{{user1}}', content: { text: query } },
-      { user: '{{user2}}', content: { text: '', action: 'HEURIST'}},
-    ],
-  )
+  }
 };
