@@ -51,5 +51,6 @@ export const heuristAction: Action = {
       console.error("Action [GET_PRICE] error:", err);
       return false;
     }
-  }
+  },
+  examples: [],
 };
