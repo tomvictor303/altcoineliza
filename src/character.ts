@@ -1,5 +1,5 @@
 import { Character, Clients, defaultCharacter, ModelProviderName } from "@elizaos/core";
-import { HEURIST_AGENT_NAMES, HEURIST_TRIGGER_QUERIES } from "./utils/constants.ts";
+import { HEURIST_AGENT_NAMES, HEURIST_TRIGGER_QUERIES, HEURIST_AGENT_EXAMPLES } from "./utils/constants.ts";
 import fs from "fs/promises";
 import path from "path";
 
@@ -21,6 +21,14 @@ const knowledge = [
     "DeepResearchAgent performs multi-level web searches with recursive exploration, analyzes content across sources, and produces comprehensive research reports with key insights. It has this API function: deep_research.",
     "MemoryAgent maintains conversation history across sessions and platforms. It can query the conversation history and store new conversations. It has these API functions: store_conversation, retrieve_conversations."
 ];
+
+for (const agentName in HEURIST_AGENT_EXAMPLES) {
+    let agent_exmaples = HEURIST_AGENT_EXAMPLES[agentName];
+    for(let i = 0; i < agent_exmaples.length; i++) {
+        let knowledge_text = `${agentName} 's question example: ${agent_exmaples[i]}`;
+        knowledge.push(knowledge_text)
+    }
+}
 
 export const character: any = {
     ...characterJson,
