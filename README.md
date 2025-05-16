@@ -8,6 +8,9 @@ pnpm add better-sqlite3@latest --force
 npm rebuild better-sqlite3
 ```
 
+Do not use `--character` option to start agent
+Knowledges are imported in `character.ts` file
+
 ## Edit the character files
 
 Open `src/character.ts` to modify the default character. Uncomment and edit.
