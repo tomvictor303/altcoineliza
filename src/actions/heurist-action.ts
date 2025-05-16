@@ -19,8 +19,10 @@ export const heuristAction: Action = {
       const context = `Please tell me which HEURIST agent is suitable for the message.
                       List of HEURIST agents that we can use: ${HEURIST_AGENT_NAMES.join(',')}.
                       The message is: ${message.content.text}
+                      If message provides non-solana wallet address, do not select SolWalletAgent.
                       Only respond with agent name, do not include any other text.
-                      If you cannot find out among provided agent names, just reply with appropriate response.`;
+                      If you cannot find out among provided agent names, just reply with appropriate response.
+                      `;
       const agentName = await generateText({
         runtime,
         context,
