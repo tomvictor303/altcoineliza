@@ -6,6 +6,11 @@ export const HEURIST_AGENT_NAMES = [
   "TwitterInfoAgent", 
   "TokenMetricsAgent",        
   "SolWalletAgent",
+  "AIXBTProjectInfoAgent",
+  "PondWalletAnalysisAgent",
+  "AlloraPricePredictionAgent",
+  "DeepResearchAgent",
+  "MemoryAgent",
 ];
 
 export const HEURIST_TRIGGER_QUERIES = [
