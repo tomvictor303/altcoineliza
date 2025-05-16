@@ -1,6 +1,10 @@
 import { Character, Clients, defaultCharacter, ModelProviderName } from "@elizaos/core";
-import characterJson from '../characters/acai.character.json';
 import { HEURIST_AGENT_NAMES, HEURIST_TRIGGER_QUERIES } from "./utils/constants.ts";
+import fs from "fs/promises";
+import path from "path";
+
+const filePath = path.resolve("./characters/acai.character.json");
+const characterJson = JSON.parse(await fs.readFile(filePath, "utf-8"));
 
 const knowledge = [
     `We have access to these HEURIST agents: ${HEURIST_AGENT_NAMES.join(',')}`,
@@ -18,7 +22,7 @@ const knowledge = [
     "MemoryAgent maintains conversation history across sessions and platforms. It can query the conversation history and store new conversations. It has these API functions: store_conversation, retrieve_conversations."
 ];
 
-export const character: Character = {
+export const character: any = {
     ...characterJson,
     knowledge,
 };
