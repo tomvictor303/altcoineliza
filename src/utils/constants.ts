@@ -23,6 +23,7 @@ export const HEURIST_TRIGGER_QUERIES = [
   "List crypto categories",
   "Compare DeFi tokens",
   // DexScreenerTokenInfoAgent
+  "Question about DexScreener API or DexScreenerTokenInfoAgent",
   "Show me information about UNI on Uniswap",
   "Recent price movement for HEU",
   "Recent trading activity for TRUMP token on Solana?",
@@ -47,17 +48,17 @@ export const HEURIST_TRIGGER_QUERIES = [
   "Analyze the top tokens commonly held by the holders of Solana token",
   "Fetch and analyze recent SWAP transactions for a Solana wallet address 8XZGkQW7xzwoe8UQd7LP9TPvE7yBzk5A6KYZm2LqL6L2",
   // AIXBTProjectInfoAgent
-  "Questions about AIXBTProjectInfoAgent and AIXBT API",
+  "Questions about AIXBTProjectInfoAgent or AIXBT API",
   "Tell me about Heurist",
   "What are the latest developments for Ethereum?",
   "Trending projects in the crypto space",
   // PondWalletAnalysisAgent
-  "Questions about PondWalletAnalysisAgent and Cryptopond API",
+  "Questions about PondWalletAnalysisAgent or Cryptopond API",
   "Analyze Ethereum wallet 0x2B25B37c683F042E9Ae1877bc59A1Bb642Eb1073",
   "What's the trading volume for Solana wallet 8gc59zf1ZQCxzkSuepV8WmuuobHCPpydJ2RLqwXyCASS?",
   "Check the transaction activity for Base wallet 0x97224Dd2aFB28F6f442E773853F229B3d8A0999a",
   // AlloraPricePredictionAgent
-  "Questions about Allora price prediction API and AlloraPricePredictionAgent",
+  "Questions about Allora price prediction API or AlloraPricePredictionAgent",
   "What is the price prediction for BTC in the next 5 minutes?",
   "Price prediction for ETH in the next 8 hours",
   // DeepResearchAgent
