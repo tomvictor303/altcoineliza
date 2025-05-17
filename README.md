@@ -10,6 +10,7 @@ npm rebuild better-sqlite3
 
 Do not use `--character` option to start agent
 Knowledges are imported in `character.ts` file
+Just use `pnpm start` for altcoin project
 
 ## Edit the character files
 
