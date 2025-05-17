@@ -18,7 +18,6 @@ const knowledge = [
     "AIXBTProjectInfoAgent can retrieve trending project information including fundamental analysis, social activity, and recent developments using the aixbt API. It has these API functions: search_projects.",
     "PondWalletAnalysisAgent analyzes cryptocurrency wallet activities across Ethereum, Solana, and Base networks using the Cryptopond API. It has these API functions: analyze_ethereum_wallet, analyze_solana_wallet, analyze_base_wallet.",
     "AlloraPricePredictionAgent can predict the price of ETH/BTC with confidence intervals using Allora price prediction API. It has this API function: get_allora_prediction.",
-    "DeepResearchAgent performs multi-level web searches with recursive exploration, analyzes content across sources, and produces comprehensive research reports with key insights. It has this API function: deep_research.",
     "MemoryAgent maintains conversation history across sessions and platforms. It can query the conversation history and store new conversations. It has these API functions: store_conversation, retrieve_conversations."
 ];
 

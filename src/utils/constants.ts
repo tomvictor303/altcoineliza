@@ -9,7 +9,6 @@ export const HEURIST_AGENT_NAMES = [
   "AIXBTProjectInfoAgent",
   "PondWalletAnalysisAgent",
   "AlloraPricePredictionAgent",
-  "DeepResearchAgent",
   "MemoryAgent",
 ];
 
