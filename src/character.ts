@@ -43,4 +43,25 @@ export const character: any = {
         ...characterJson.messageExamples,
         ...heurist_trigger_examples,
     ],
+    clientConfig: {
+        discord: {
+            // shouldIgnoreBotMessages: true,
+            // shouldIgnoreDirectMessages: true,
+            shouldRespondOnlyToMentions: true, // Important
+            // messageSimilarityThreshold?: number;
+            // isPartOfTeam?: boolean;
+            // teamAgentIds?: string[];
+            // teamLeaderId?: string;
+            // teamMemberInterestKeywords?: string[];
+            // allowedChannelIds?: string[];
+            // autoPost?: {
+            //     enabled?: boolean;
+            //     monitorTime?: number;
+            //     inactivityThreshold?: number;
+            //     mainChannelId?: string;
+            //     announcementChannelIds?: string[];
+            //     minTimeBetweenPosts?: number;
+            // }
+        }
+    }
 };
