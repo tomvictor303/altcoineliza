@@ -33,7 +33,7 @@ export const heuristAction: Action = {
                   ${message.content.text}`;
       }
       // remove user mentioning in prompt
-      prompt_msg = prompt_msg.replace(/<@!?(\d+)>/g, '').replace(/\s+/g, ' ').trim();
+      prompt_msg = prompt_msg.replace(/<@\d+>/g, '');
       
       let context = `Please tell me which HEURIST agent is suitable for the message.
                       List of HEURIST agents that we can use: ${HEURIST_AGENT_NAMES.join(',')}.
