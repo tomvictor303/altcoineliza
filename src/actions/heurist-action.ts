@@ -15,28 +15,37 @@ export const heuristAction: Action = {
       console.log(`HEURIST: message.content.text`, message.content.text)
       console.log(`HEURIST: message.content.source`, message.content.source)
       console.log(`HEURIST: message.content.action`, message.content.action)
+
+      let origin_text_of_inReplyTo = undefined;
+      if ( message.content.inReplyTo ) {
+        for (let i = 0; i < state.recentMessagesData.length; i++) {
+          if ( state.recentMessagesData[i].id === message.content.inReplyTo ) {
+            origin_text_of_inReplyTo = state.recentMessagesData[i].content.text
+            console.log(`origin_text_of_inReplyTo`, origin_text_of_inReplyTo);
+          }
+        }
+      }
+
+      let prompt_msg = message.content.text;
+      if (origin_text_of_inReplyTo) {
+        prompt_msg = `${origin_text_of_inReplyTo}
+
+                  ${message.content.text}`;
+      }
+      // remove user mentioning in prompt
+      prompt_msg = prompt_msg.replace(/<@!?(\d+)>/g, '').replace(/\s+/g, ' ').trim();
       
       let context = `Please tell me which HEURIST agent is suitable for the message.
                       List of HEURIST agents that we can use: ${HEURIST_AGENT_NAMES.join(',')}.
-                      Ignore username mention in message analysis.
                       If message provides non-solana wallet address, do not select SolWalletAgent.
                       Only respond with agent name, do not include any other text.
                       If you cannot find out among provided agent names, just reply with appropriate response.
 
-                      The message is: ${message.content.text}
+                      (BEGIN of message)
+                      ${prompt_msg}
+                      (END of message)
                       `;
 
-      if ( message.content.inReplyTo ) {
-        for (let i = 0; i < state.recentMessagesData.length; i++) {
-          if ( state.recentMessagesData[i].id === message.content.inReplyTo ) {
-            let origin_text = state.recentMessagesData[i].content.text
-            context += `The message which is provided above is reply of the following origin message. 
-                      Plz reference both messages.
-                      The origin message to reference is: ${origin_text}`;
-            console.log(`originText of inReply`, origin_text);
-          }
-        }
-      }
       const agentName = await generateText({
         runtime,
         context,
