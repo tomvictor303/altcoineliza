@@ -18,6 +18,7 @@ export const heuristAction: Action = {
       
       let context = `Please tell me which HEURIST agent is suitable for the message.
                       List of HEURIST agents that we can use: ${HEURIST_AGENT_NAMES.join(',')}.
+                      Ignore username mention in message analysis.
                       If message provides non-solana wallet address, do not select SolWalletAgent.
                       Only respond with agent name, do not include any other text.
                       If you cannot find out among provided agent names, just reply with appropriate response.
@@ -30,7 +31,9 @@ export const heuristAction: Action = {
           if ( state.recentMessagesData[i].id === message.content.inReplyTo ) {
             let origin_text = state.recentMessagesData[i].content.text
             context += `The message which is provided above is reply of the following origin message. 
+                      Plz reference both messages.
                       The origin message to reference is: ${origin_text}`;
+            console.log(`originText of inReply`, origin_text);
           }
         }
       }
