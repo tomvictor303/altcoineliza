@@ -16,13 +16,24 @@ export const heuristAction: Action = {
       console.log(`HEURIST: message.content.source`, message.content.source)
       console.log(`HEURIST: message.content.action`, message.content.action)
       
-      const context = `Please tell me which HEURIST agent is suitable for the message.
+      let context = `Please tell me which HEURIST agent is suitable for the message.
                       List of HEURIST agents that we can use: ${HEURIST_AGENT_NAMES.join(',')}.
-                      The message is: ${message.content.text}
                       If message provides non-solana wallet address, do not select SolWalletAgent.
                       Only respond with agent name, do not include any other text.
                       If you cannot find out among provided agent names, just reply with appropriate response.
+
+                      The message is: ${message.content.text}
                       `;
+
+      if ( message.content.inReplyTo ) {
+        for (let i = 0; i < state.recentMessagesData.length; i++) {
+          if ( state.recentMessagesData[i].id === message.content.inReplyTo ) {
+            let origin_text = state.recentMessagesData[i].content.text
+            context += `The message which is provided above is reply of the following origin message. 
+                      The origin message to reference is: ${origin_text}`;
+          }
+        }
+      }
       const agentName = await generateText({
         runtime,
         context,
